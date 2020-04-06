@@ -41,6 +41,7 @@ class ReplayGenerator(GeneratorPlugin):
                 event = token.replace(event, et=event_time, lt=event_time, s=self._sample)
             else:
                 event = token.replace(event, s=self._sample)
+
         if self._sample.hostToken:
             # clear the host mvhash every time, because we need to re-randomize it
             self._sample.hostToken.mvhash = {}
@@ -48,6 +49,14 @@ class ReplayGenerator(GeneratorPlugin):
         host = rpevent['host']
         if self._sample.hostToken:
             rpevent['host'] = self._sample.hostToken.replace(host, s=self._sample)
+
+        if self._sample.sourceToken:
+            # clear the source mvhash every time, because we need to re-randomize it
+            self._sample.sourceToken.mvhash = {}
+
+        source = rpevent['source']
+        if self._sample.sourceToken:
+            rpevent['source'] = self._sample.hostToken.replace(source, s=self._sample)
 
         rpevent['_raw'] = event
         self._out.bulksend([rpevent])

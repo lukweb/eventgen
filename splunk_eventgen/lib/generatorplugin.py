@@ -93,7 +93,7 @@ class GeneratorPlugin(object):
             self._sample.source = event['source']
             # Allow randomizing the source:
             if self._sample.sourceToken:
-                self.source = self._sample.sourceToken.replace(self.sourceF)
+                self.source = self._sample.sourceToken.replace(self.source)
 
             self._sample.sourcetype = event['sourcetype']
             logger.debug("Setting CSV parameters. index: '%s' host: '%s' source: '%s' sourcetype: '%s'" %
