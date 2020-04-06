@@ -366,7 +366,7 @@ class Sample(object):
                     self.sampleDict = []
                     self.sampleLines = []
                     # Fix to load large csv files, work with python 2.5 onwards
-                    #FIXME: uncomment csv.field_size_limit(sys.maxsize)
+                    csv.field_size_limit(sys.maxsize)
                     csvReader = csv.DictReader(fh)
                     for line in csvReader:
                         if '_raw' in line:
