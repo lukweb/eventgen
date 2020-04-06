@@ -191,6 +191,8 @@ class GeneratorPlugin(object):
             # assigned a list of values picked from a random line in that file
             mvhash = {}
             host = targetevent['host']
+            source = targetevent['source']
+
             if hasattr(self._sample, "sequentialTimestamp") and self._sample.sequentialTimestamp and \
                     self._sample.generator != 'perdayvolumegenerator':
                 pivot_timestamp = EventgenTimestamp.get_sequential_timestamp(earliest, latest, eventcount, total_count)
@@ -213,14 +215,14 @@ class GeneratorPlugin(object):
                 if self._sample.sourceToken:
                     # clear the source mvhash every time, because we need to re-randomize it
                     self._sample.sourceToken.mvhash = {}
-                    source = self._sample.sourceToken.replace(host, s=self._sample)
+                    source = self._sample.sourceToken.replace(source, s=self._sample)
             try:
                 time_val = int(time.mktime(pivot_timestamp.timetuple()))
             except Exception:
                 time_val = int(time.mktime(self._sample.now().timetuple()))
             temp_event = {
                 '_raw': event, 'index': index, 'host': host, 'hostRegex': self._sample.hostRegex,
-                'source': targetevent['source'], 'sourcetype': targetevent['sourcetype'], '_time': time_val}
+                'source': source, 'sourcetype': targetevent['sourcetype'], '_time': time_val}
             send_events.append(temp_event)
         return send_events
 
