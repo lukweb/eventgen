@@ -91,6 +91,10 @@ class GeneratorPlugin(object):
                 self.host = self._sample.hostToken.replace(self.host)
 
             self._sample.source = event['source']
+            # Allow randomizing the source:
+            if self._sample.sourceToken:
+                self.source = self._sample.sourceToken.replace(self.sourceF)
+
             self._sample.sourcetype = event['sourcetype']
             logger.debug("Setting CSV parameters. index: '%s' host: '%s' source: '%s' sourcetype: '%s'" %
                               (self._sample.index, self._sample.host, self._sample.source, self._sample.sourcetype))
@@ -205,8 +209,11 @@ class GeneratorPlugin(object):
                 if self._sample.hostToken:
                     # clear the host mvhash every time, because we need to re-randomize it
                     self._sample.hostToken.mvhash = {}
-                if self._sample.hostToken:
                     host = self._sample.hostToken.replace(host, s=self._sample)
+                if self._sample.sourceToken:
+                    # clear the source mvhash every time, because we need to re-randomize it
+                    self._sample.sourceToken.mvhash = {}
+                    source = self._sample.sourceToken.replace(host, s=self._sample)
             try:
                 time_val = int(time.mktime(pivot_timestamp.timetuple()))
             except Exception:
