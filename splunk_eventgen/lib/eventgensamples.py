@@ -53,6 +53,7 @@ class Sample(object):
     splunkPass = None
     index = None
     source = None
+    sourceToken = None
     sourcetype = None
     host = None
     hostRegex = None
