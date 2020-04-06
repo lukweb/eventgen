@@ -94,6 +94,7 @@ class Config(object):
                     'outputCounter', 'sequentialTimestamp', 'extendIndexes', 'disableLoggingQueue']
     _validTokenTypes = {'token': 0, 'replacementType': 1, 'replacement': 2}
     _validHostTokens = {'token': 0, 'replacement': 1}
+    _validSourceTokens = {'token': 0, 'replacement': 1}
     _validReplacementTypes = [
         'static', 'timestamp', 'replaytimestamp', 'random', 'rated', 'file', 'mvfile', 'seqfile', 'integerid']
     validOutputModes = []
@@ -366,6 +367,13 @@ class Config(object):
                                 # default hard-coded for host replacement
                                 s.hostToken.replacementType = 'file'
                             setattr(s.hostToken, value[0], oldvalue)
+                        elif key.find("source.") > -1:
+                            # logger.info("sourceToken.{} = {}".format(value[1],oldvalue))
+                            if not isinstance(s.sourceToken, Token):
+                                s.sourceToken = Token(s)
+                                # default hard-coded for source replacement
+                                s.sourceToken.replacementType = 'file'
+                            setattr(s.sourceToken, value[0], oldvalue)
                         else:
                             if len(s.tokens) <= value[0]:
                                 x = (value[0] + 1) - len(s.tokens)
@@ -774,6 +782,14 @@ class Config(object):
                         raise ValueError("Could not parse token index '%s' token type '%s' in stanza '%s'" %
                                          (groups[0], groups[1], stanza))
                 return int(groups[0]), groups[1]
+        elif key.find('source.') > -1:
+            results = re.match(r'source\.(\w+)', key)
+            if results is not None:
+                groups = results.groups()
+                if groups[0] not in self._validSourceTokens:
+                    logger.error("Could not parse host token type '%s' in stanza '%s'" % (groups[0], stanza))
+                    raise ValueError("Could not parse host token type '%s' in stanza '%s'" % (groups[0], stanza))
+                return groups[0], value
         elif key.find('host.') > -1:
             results = re.match(r'host\.(\w+)', key)
             if results is not None:
