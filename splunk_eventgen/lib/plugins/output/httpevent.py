@@ -91,7 +91,7 @@ class HTTPEventOutputPlugin(HTTPCoreOutputPlugin):
                 else:
                     logger.debug("Ignoring response from HTTP server, leaving httpevent outputter")
             except Exception as e:
-                logger.error('failed indexing events, reason: %s ' % e)
+                logger.error('failed indexing events (httpevent), reason: %s ' % e)
 
 
 def load():

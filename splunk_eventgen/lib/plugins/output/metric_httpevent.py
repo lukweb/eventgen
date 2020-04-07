@@ -87,7 +87,7 @@ class MetricHTTPEventOutputPlugin(HTTPCoreOutputPlugin):
                 else:
                     logger.debug("Ignoring response from HTTP server, leaving  metric_httpevent outputter")
             except Exception as e:
-                logger.error('failed indexing events, reason: %s ' % e)
+                logger.error('failed indexing events (metric_httpevent), reason: %s ' % e)
 
 
 def load():
