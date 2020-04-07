@@ -44,7 +44,6 @@ class MetricHTTPEventOutputPlugin(HTTPCoreOutputPlugin):
                     else:
                         logger.debug("Event contains _raw, attempting to process...")
                         logger.debug(event['_raw'])
-                        logger.error(event['_raw'])
                         fields = json.loads(event['_raw'])['fields']
                         payloadFragment['fields'] = fields
                         payloadFragment['event'] = "metric"
